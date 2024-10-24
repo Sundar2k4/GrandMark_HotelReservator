@@ -1,30 +1,24 @@
 import Header from "../Header";
+import {Link} from "react-router-dom"
 
 export default function LoginPage()
 {
     return (
-     
-      <div className="flex justify-center items-center h-screen">
-      <div className="mt-4 border border-grey-4 p-6 translate-x-10 -translate-y-10">
-        <h1 className="text-l text-center">LOGIN</h1>
-        <form className="p-4">
-          <input
-            type="text"
-            placeholder="your@email.com"
-            className="border border-grey rounded-2xl my-1 px-2 py-3 mb-2"
-          /><br /><br />
-          <input
-            type="password"
-            placeholder="password"
-            className="border border-grey rounded-2xl my-1 px-2 py-3 mb-2"
-          /><br /><br />
-          <button className="border border-grey-4 rounded-full gap-4 p-1 bg-primary text-white">
-            Login
-          </button>
+       <div className="mt-4 grow flex items-center justify-center">
+        <div className="mb-32">
+        <h1 className="text-4xl text-center mb-4">LOGIN</h1>
+       <form className="max-w-lg mx-auto">
+        <input type="email" placeholder="Your@email.com" />
+        <input type="password" placeholder="password" />
+        <button className="primary rounded-full w-full bg-primary text-white h-10">Login</button>
+        <div className="py-2 text-center text-gray-500">
+         Dont have an account yet?
+         <Link className="underline text font-bold" to = {'/register'}> Register Here </Link>
+        </div>
         </form>
-      </div>
-    </div>
-    
+       </div>
+       
+       </div>
     
     );
 }
