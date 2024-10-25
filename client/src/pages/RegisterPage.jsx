@@ -1,33 +1,28 @@
 import {Link} from "react-router-dom"
 import {useState} from "react"
-import axios from "axios"
+import axios, { Axios } from "axios"
 
 export default function RegisterPage()
 {
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    function registerUser(ev){
+    function registerUser(ev){ //ev is used to store the data name email and password and send it to the function
        ev.preventDefault();//to prevent reloading the page
-       axios.get('https://localhost:4000/test');
+       axios.post('/register',{
+         name,
+         email,
+         password,
+       });
     }
     return (
        <div className="mt-4 grow flex items-center justify-center">
         <div className="mb-32">
         <h1 className="text-4xl text-center mb-4">REGISTER</h1>
        <form className="max-w-lg mx-auto" onSubmit={registerUser}>
-        <input type="text" 
-        placeholder="Name" 
-        value={name} 
-        onChange = {ev => setName(ev.target.value)}/>
-        <input type="email" 
-        placeholder="Your@email.com" 
-        value={password} 
-        onChange = {ev => setPassword(ev.target.value)} />
-        <input type="password" 
-        placeholder="password" 
-        value={email} 
-        onChange = {ev => setEmail(ev.target.value)} />
+        <input type="text" placeholder="Name" value={name} onChange = {ev => setName(ev.target.value)}/> 
+        <input type="email" placeholder="Your@email.com" value={email} onChange = {ev => setEmail(ev.target.value)} />
+        <input type="password" placeholder="password" value={password} onChange = {ev => setPassword(ev.target.value)} />
         <button className="primary rounded-full w-full bg-primary text-white h-10">Register</button>
         <div className="py-2 text-center text-gray-500">
          Already a member?
