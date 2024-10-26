@@ -2,21 +2,29 @@ import Header from "../Header";
 import {Link} from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
+import {Navigate} from "react-router-dom"; 
 export default function LoginPage()
 {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [redirect,setRedirect] = useState(false);
     async function handleLoginSubmit(ev)  
     {
        ev.preventDefault();
        try{
-           await axios.post('/Login',{email,password});
+           await axios.post('/Login',{email,password},{withCredentials:true});
+           setRedirect(true);
            alert('User Login Successfull');
         }catch(e)
         {
             alert('User Login Failed')
         }
        
+    }
+
+    if(redirect)
+    {
+       return <Navigate to = {'/'}/>
     }
     return (
        

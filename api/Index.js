@@ -4,10 +4,11 @@ const app = express();
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./models/User.js')
+const User = require('./models/User.js');
+const jst = require('jsonwebtoken');
 
 const bcryptSalt = bcrypt.genSaltSync(10); //function to generate the secret hash key for encrypting password
-
+const jstsecret = 'bdewy321823623bshwe81230nqj';
 app.use(express.json()) //to avoid the internal server error adding json parser
 const allowedOrigins = [
     'http://localhost:5173',
@@ -59,14 +60,27 @@ app.post('/Login',async(req,res)=>
     const {email,password} = req.body;
     const userDoc = await User.findOne({email});
 
-    if(userDoc)
+    if(userDoc) //comparing with the email in the Db for user login
     {
-        res.json('found');
+        const passOK = bcrypt.compareSync(password,userDoc.password);//compare the password if the gmail is same.
+        if(passOK)
+        {
+            jst.sign({email:userDoc.email,id:userDoc._id},jstsecret,{}, (err,token)=>{
+            if(err) throw err;
+            res.cookie('token',token).json('password correct');
+        });
+        } 
+        else
+        {
+            res.status(422).json('password incorrect');
+        }
+        
     }
     else
     {
-        res.json('Not Found')
+        res.json('not found');
     }
+   
 });
 
 
