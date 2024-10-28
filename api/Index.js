@@ -54,9 +54,8 @@ app.post('/register',async (req,res)=>
 
 // cluster password: i19HsmZdvfigB2zj
 
-app.post('/Login',async(req,res)=>
+app.post('/login',async(req,res)=>
 {
-    //try{}
     const {email,password} = req.body;
     const userDoc = await User.findOne({email});
 
@@ -67,7 +66,7 @@ app.post('/Login',async(req,res)=>
         {
             jst.sign({email:userDoc.email,id:userDoc._id},jstsecret,{}, (err,token)=>{
             if(err) throw err;
-            res.cookie('token',token).json('password correct');
+            res.cookie('token',token).json(userDoc);
         });
         } 
         else
@@ -82,6 +81,22 @@ app.post('/Login',async(req,res)=>
     }
    
 });
+
+
+app.get('/profile',(req,res)=>
+{
+    res.json('user info');
+})
+
+
+
+
+
+
+
+
+
+
 
 
 app.listen(4000);
