@@ -5,11 +5,14 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User.js');
-const jst = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); // Use 'jwt' instead of 'jst'
+const cookieParser = require('cookie-parser');
 
-const bcryptSalt = bcrypt.genSaltSync(10); //function to generate the secret hash key for encrypting password
-const jstsecret = 'bdewy321823623bshwe81230nqj';
-app.use(express.json()) //to avoid the internal server error adding json parser
+const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
+const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
+app.use(express.json()); // Adds JSON parser to avoid internal server error
+app.use(cookieParser()); // Parses cookies to avoid server error when accessing cookie data
+
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173'
@@ -22,81 +25,59 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL);
 
-
 app.get('/test', (req, res) => {
     res.json('hello daw');
 });
 
-
-app.post('/register',async (req,res)=>
-{
-    try{
-    const {name,email,password} = req.body;
-    const userDoc =  await User.create({
-        
-          name,
-          email,
-          password:bcrypt.hashSync(password,bcryptSalt), //encrypting the password
-
-         
-
-    }); 
-
-    res.json(userDoc)
-}
-    catch(e)
-    {
-        res.status(422).json(e); //422-unprocessable entity
-    }
-    
-   
-})
-
-// cluster password: i19HsmZdvfigB2zj
-
-app.post('/login',async(req,res)=>
-{
-    const {email,password} = req.body;
-    const userDoc = await User.findOne({email});
-
-    if(userDoc) //comparing with the email in the Db for user login
-    {
-        const passOK = bcrypt.compareSync(password,userDoc.password);//compare the password if the gmail is same.
-        if(passOK)
-        {
-            jst.sign({email:userDoc.email,id:userDoc._id},jstsecret,{}, (err,token)=>{
-            if(err) throw err;
-            res.cookie('token',token).json(userDoc);
+app.post('/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const userDoc = await User.create({
+            name,
+            email,
+            password: bcrypt.hashSync(password, bcryptSalt), // Encrypts the password
         });
-        } 
-        else
-        {
+
+        res.json(userDoc);
+    } catch (e) {
+        res.status(422).json(e); // 422 - Unprocessable Entity
+    }
+});
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const userDoc = await User.findOne({ email });
+
+    if (userDoc) {
+        const passOK = bcrypt.compareSync(password, userDoc.password); // Compare password if email matches
+        if (passOK) {
+            jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret, {}, (err, token) => {
+                if (err) throw err;
+                res.cookie('token', token).json(userDoc);
+            });
+        } else {
             res.status(422).json('password incorrect');
         }
-        
-    }
-    else
-    {
+    } else {
         res.json('not found');
     }
-   
+});
+
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+        jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+            if (err) throw err;
+            const {name,email,_id} = await User.findById(userData.id); // Ensure using 'id' instead of '_id'
+            res.json({name,email,_id}); // Return user data if token is valid
+        });
+    } else {
+        res.json(null); // No token, return null
+    }
 });
 
 
-app.get('/profile',(req,res)=>
+app.listen(4000,()=>
 {
-    res.json('user info');
-})
-
-
-
-
-
-
-
-
-
-
-
-
-app.listen(4000);
+    console.log('listening on port 4000');
+});

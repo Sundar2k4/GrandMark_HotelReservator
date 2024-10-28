@@ -6,8 +6,17 @@ export function UserContextProvider({children}) {
     const [user,setUser] = useState(null);
     useEffect(()=>
     {
-        axios.get('/profile')
-    },[])
+        if(!user)
+        {
+            axios.get('/profile').then(({data})=>
+                {
+                    setUser(data); //fetches the email
+                });
+
+        }
+        
+       
+    },[]);
     return(
         <UserContext.Provider value={{user,setUser}}>
            {children}
