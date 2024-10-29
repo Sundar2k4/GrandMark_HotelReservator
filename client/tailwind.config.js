@@ -9,7 +9,7 @@ export default {
     extend: {
       colors:
       {
-        primary:'red',
+        primary:'green',
       },
     },
   },
