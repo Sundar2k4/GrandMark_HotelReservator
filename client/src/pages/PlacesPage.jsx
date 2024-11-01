@@ -18,20 +18,35 @@ const PlacesPage = () => {
 
   async function addPhotoByLink(ev) {
    ev.preventDefault();
-   try {
-     const { data: filename } = await axios.post('/upload-by-link', { link: photoLink });
-     setAddedPhotos((prev) => [...prev, filename]);
-     setPhotoLink(''); // Corrected to use setPhotoLink as a function
-   } catch (error) {
-     console.error('Error uploading photo by link:', error);
-   }
+   const { data: filename } = await axios.post('/upload-by-link', { link: photoLink });
+   setAddedPhotos(prev => { 
+   return [...prev, filename];
+
+   });
+   
+   setPhotoLink(''); // Corrected to use setPhotoLink as a function
+  
  }
 
- function uploadPhoto(ev)
- {
+  function uploadPhoto(ev)
+  {
      const files = ev.target.files;
-     console.log({files});
- }
+     const data = new FormData();
+     for(let i=0;i<files.length;i++)
+     {
+      data.append('photos',files[i]);
+     }
+     
+     axios.post('/upload',data,{
+      headers:{'Content-Type':'multipart/form-data'}
+     }).then(response => { //instead of the async method
+      const {data:filenames} = response;
+      setAddedPhotos((prev) =>
+         {
+            return [...prev, ...filenames];
+         } );
+     })
+ }//
   return (
        
 
@@ -68,7 +83,7 @@ const PlacesPage = () => {
               </div>
             ))}
          <label  className='text-slate-500  cursor-pointer bg-white text-4xl items-center p-2 gap-1 flex  text-2xl hover:text-black'>
-         <input type="file" className='hidden' onChange={uploadPhoto}/>
+         <input type="file" multiple className='hidden' onChange={uploadPhoto}/>
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
          </svg>

@@ -7,7 +7,10 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User.js');
 const jwt = require('jsonwebtoken'); // Use 'jwt' instead of 'jst'
 const cookieParser = require('cookie-parser');
-const download = require('image-downloader');
+const imagedownloader = require('image-downloader');
+const multer = require('multer');
+const fs = require('fs')//filesystem
+const path = require('path');
 
 const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
 const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
@@ -85,21 +88,57 @@ app.post('/logout',(req,res) =>
 });
 
 
-app.post('/upload-by-link',async (req,res) =>
 
-   {
-    const{link} = req.body;
-    const newName ='Photo'+Date.now()+'.jpg';
-    await download.image({
-    url:link,
-    dest:__dirname+'/uploads/'+ newName, //where the dirname is the whole doc structure 
-   })
 
-   res.json(newName);
-  
+app.post('/upload-by-link', async (req, res) => {
+    const { link } = req.body;
+
+    // Check if the link is a Data URL
+    if (link.startsWith('data:image/jpeg;base64,' )) {
+        // Handle the Data URL case
+        const base64Data = link.replace(/^data:image\/jpeg;base64,/, "");
+        const newName = 'Photo' + Date.now() + '.jpg';
+        const filePath = path.join(__dirname, 'uploads', newName);
+
+        fs.writeFile(filePath, base64Data, 'base64', (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Failed to save image' });
+            }
+            return res.json(newName);
+        });
+    } else {
+        // Handle normal URL case
+        try {
+            const newName = 'Photo' + Date.now() + '.jpg';
+            const filePath = path.join(__dirname, 'uploads', newName);
+
+            // Use the download function only for standard URLs
+            await imagedownloader.image({
+                url: link, // This should be a standard URL
+                dest: filePath
+            });
+            res.json(newName);
+        } catch (error) {
+            res.status(500).json({ message: 'Error downloading image', error: error.message });
+        }
+    }
 });
 
 
+const photosMiddleware = multer({dest:'uploads'});
+app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>
+{ const uploadedFiles = [];
+  for(let i=0;i<req.files.length;i++)
+  {
+    const {path,originalname} = req.files[i];
+    const parts = originalname.split('.');
+    const ext = parts[parts.length-1];
+    const newPath = path+ '.' + ext;
+    fs.renameSync(path,newPath);
+    uploadedFiles.push(newPath.replace('uploads/',''));
+  }
+    res.json(uploadedFiles);
+});
 
 
 
