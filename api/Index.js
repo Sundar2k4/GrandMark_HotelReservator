@@ -7,11 +7,13 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User.js');
 const jwt = require('jsonwebtoken'); // Use 'jwt' instead of 'jst'
 const cookieParser = require('cookie-parser');
+const download = require('image-downloader');
 
 const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
 const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
 app.use(express.json()); // Adds JSON parser to avoid internal server error
 app.use(cookieParser()); // Parses cookies to avoid server error when accessing cookie data
+app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole path
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -81,6 +83,25 @@ app.post('/logout',(req,res) =>
 {
           res.cookie('token','').json(true);//it sends a token for a dummy value after receiving which the function redirects to homepage
 });
+
+
+app.post('/upload-by-link',async (req,res) =>
+
+   {
+    const{link} = req.body;
+    const newName ='Photo'+Date.now()+'.jpg';
+    await download.image({
+    url:link,
+    dest:__dirname+'/uploads/'+ newName, //where the dirname is the whole doc structure 
+   })
+
+   res.json(newName);
+  
+});
+
+
+
+
 
 app.listen(4000,()=>
 {
