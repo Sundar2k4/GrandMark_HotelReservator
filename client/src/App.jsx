@@ -9,7 +9,6 @@ import { useEffect } from 'react'
 import { UserContextProvider } from './UserContext.jsx'
 import AccountPage from './pages/AccountPage.jsx'
 import PlacesPage from './pages/PlacesPage.jsx'
-
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 function App() {
