@@ -28,25 +28,28 @@ const PlacesPage = () => {
   
  }
 
-  function uploadPhoto(ev)
-  {
-     const files = ev.target.files;
-     const data = new FormData();
-     for(let i=0;i<files.length;i++)
-     {
-      data.append('photos',files[i]);
-     }
-     
-     axios.post('/upload',data,{
-      headers:{'Content-Type':'multipart/form-data'}
-     }).then(response => { //instead of the async method
-      const {data:filenames} = response;
-      setAddedPhotos((prev) =>
-         {
-            return [...prev, ...filenames];
-         } );
-     })
- }//
+ function uploadPhoto(ev) {
+   const files = ev.target.files;
+   const data = new FormData();
+
+   // Append files to FormData
+   for (let i = 0; i < files.length; i++) {
+       data.append('photos', files[i]); // 'photos' should match the field name expected by multer
+   }
+
+   axios.post('/upload', data, {
+       headers: { 'Content-Type': 'multipart/form-data' }
+   }).then(response => {
+       const { data: filenames } = response;
+       setAddedPhotos(prev => {
+           return [...prev, ...filenames];
+       });
+   })
+   .catch(error => {
+       console.error('Error uploading photos:', error);
+   });
+}
+
   return (
        
 
