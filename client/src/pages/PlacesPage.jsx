@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Perks from '../Perks';
 import PhotosUploader from '../PhotosUploader';
@@ -13,10 +13,20 @@ const PlacesPage = () => {
   const[extraInfo,setExtraInfo] = useState([]);
   const[checkIn,setCheckIn] = useState('');
   const[checkOut,setCheckOut] = useState('');
-  const[maxGuests,setMaxGuests] = useState('');
+  const[maxGuests,setMaxGuests] = useState(1);
   const[addedPhotos,setAddedPhotos] = useState([]);
- 
+  const [redirect,setRedirect] = useState('');
 
+ 
+  async function addNewPlace(ev) {
+   ev.preventDefault();
+   await axios.post('/places',{title,address,addedPhotos,Description,perks,extraInfo,checkIn,checkOut,maxGuests} );//sending the data to the server point 
+   setRedirect('/accounts/places')
+  }
+  if(redirect)
+  {
+   <Navigate to={redirect}></Navigate>
+  }
   
   return (
        
@@ -35,7 +45,7 @@ const PlacesPage = () => {
 
        )}
        {action==='new' && (
-        <form>
+        <form onSubmit={addNewPlace}>
          <h1 className='text-2xl'>Name</h1>
          <input type="text" value={title} onChange={ev=>setTitle(ev.target.value)} placeholder='Your amazing location name'/>
          <h1 className='text-2xl'>Address</h1>

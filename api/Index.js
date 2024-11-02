@@ -11,6 +11,7 @@ const imagedownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs')//filesystem
 const path = require('path');
+const Place = require('./models/Place.js');
 
 const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
 const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
@@ -146,7 +147,31 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
     res.json(uploadedFiles); // Respond with the array of file URLs
 });
 
+app.post('/places',(req,res)=>
+{
+    const { token } = req.cookies;
+    const {title,address,addedPhotos,description,perks,extraInfo,checkIn,checkOut,maxGuests} = req.body;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        try{
+              const {PlaceDoc} = await Place.create({
+              owner:userData.id,
+              title,
+              address,
+              photos: addedPhotos,
+              description,
+              perks,
+              extraInfo,
+              checkIn,
+              checkOut,
+              maxGuests, 
+        });
 
+        res.json(PlaceDoc);
+    }catch(e){res.json(e)};
+    });
+   
+});
 
 
 app.listen(4000,()=>
