@@ -174,6 +174,16 @@ app.post('/places',(req,res)=>
 });
 
 
+app.get('/places',(req,res)=>
+{
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        const {id} = userData; //obtaining the unique user data from a particular user with the id 
+        res.json( await Place.find({owner:id}));
+    });
+
+})
+
 app.listen(4000,()=>
 {
     console.log('listening on port 4000');
