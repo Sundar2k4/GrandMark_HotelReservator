@@ -9,7 +9,7 @@ export default function PlacesFormPage() {
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [photos, setPhotos] = useState([]);
-    const [Description, setDescription] = useState('');
+    const [description, setDescription] = useState('');
     const [perks, setPerks] = useState([]);
     const [extraInfo, setExtraInfo] = useState('');
     const [checkIn, setCheckIn] = useState('');
@@ -23,7 +23,7 @@ export default function PlacesFormPage() {
     async function addNewPlace(ev) {
         ev.preventDefault();
         await axios.post('/places', {
-            title, address, addedPhotos, Description, perks, extraInfo, checkIn, checkOut, maxGuests
+            title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests
         });
         setRedirect(true);
     }
@@ -58,7 +58,7 @@ export default function PlacesFormPage() {
                         <h1 className='text-2xl'>Description</h1>
                         <textarea
                             className='py-9 w-full border border-slate-200 rounded-xl'
-                            value={Description}
+                            value={description}
                             onChange={ev => setDescription(ev.target.value)}
                             placeholder='Describe your location with style!'
                         ></textarea>

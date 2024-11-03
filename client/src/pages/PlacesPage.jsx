@@ -29,9 +29,16 @@ return (
                 Add new places
             </Link>
          </div>
-         <div className="">
+         <div className="mt-5">
          {places.length > 0 && places.map(place => (//using the id to find the user and display the data 
-          <div key={place.id}>{place.title}</div> //and finally we are displaying the title from the DB!
+          <div className='bg-gray-100 px-4 py-8 rounded-xl flex gap-4 text-xl' key={place.id}>
+            {place.title}
+            <p>{place.description}</p>
+            {place.photos.length>0&&(
+               <div className="w-32 h-32 bg-gray-200"><img src={place.photos[4]} alt="" /></div>
+            )}
+            
+            </div> //and finally we are displaying the title from the DB!
           ))}
         </div>
 
