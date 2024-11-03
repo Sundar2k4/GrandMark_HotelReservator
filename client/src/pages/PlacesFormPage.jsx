@@ -18,6 +18,7 @@ export default function PlacesFormPage() {
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [redirectToPlacesList, setRedirectToPlacesList] = useState(false);
     const [redirect,setRedirect] = useState(false);
+    const[price,setPrice] = useState(500);
     const {id} = useParams();
     console.log({id})
     useEffect(()=>
@@ -39,6 +40,7 @@ export default function PlacesFormPage() {
                    setCheckIn(data.checkIn);
                    setCheckOut(data.checkOut);
                    setMaxGuests(data.maxGuests);
+                   setPrice(data.price);
                 
                 }); //this is for the people to edit the existing information 
     },[id]);
@@ -58,7 +60,8 @@ export default function PlacesFormPage() {
                 extraInfo, 
                 checkIn, 
                 checkOut, 
-                maxGuests
+                maxGuests,
+                price,
             });
 
             setRedirect(true);
@@ -74,7 +77,8 @@ export default function PlacesFormPage() {
                 extraInfo, 
                 checkIn, 
                 checkOut, 
-                maxGuests
+                maxGuests,
+                price,
             });
 
             setRedirect(true);
@@ -88,7 +92,7 @@ export default function PlacesFormPage() {
     }
     return (
               
-                <div>
+                <div className="">
                     <form onSubmit={savePlace}>
                         <h1 className='text-2xl'>Name</h1>
                         <input
@@ -134,7 +138,7 @@ export default function PlacesFormPage() {
 
                         <h1 className='text-2xl'>Timing</h1>
                         <p className='text-slate-400'>Add the check-in and check-out time</p>
-                        <div className="grid grid-cols-2 mt-2 sm:grid-cols-3">
+                        <div className="mt-2 grid sm:grid-cols-2  md:grid-cols-4">
                             <div className="p-2">
                                 <p className='text-xl'>Check-In time</p>
                                 <input
@@ -160,6 +164,15 @@ export default function PlacesFormPage() {
                                     value={maxGuests}
                                     onChange={ev => setMaxGuests(ev.target.value)}
                                     placeholder='2'
+                                />
+                            </div>
+                            <div className="p-2">
+                                <p className='text-xl'>Price per night</p>
+                                <input
+                                    type="number"
+                                    value={price}
+                                    onChange={ev => setPrice(ev.target.value)}
+                                    placeholder='2000'
                                 />
                             </div>
                         </div>
