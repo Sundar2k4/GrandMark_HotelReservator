@@ -31,14 +31,17 @@ return (
          </div>
          <div className="mt-5">
          {places.length > 0 && places.map(place => (//using the id to find the user and display the data 
-          <div className='bg-gray-100 px-4 py-8 rounded-xl flex gap-4 text-xl' key={place.id}>
-            {place.title}
-            <p>{place.description}</p>
+          <Link to={'/account/places/'+place._id} className='bg-gray-100  cursor-pointer px-4 py-8 rounded-xl flex gap-4 text-2xl' key={place.id}>
             {place.photos.length>0&&(
-               <div className="w-32 h-32 bg-gray-200"><img src={place.photos[4]} alt="" /></div>
+               <div className="w-[12rem] h-[12rem] px-4  mt-7 flex-start grow shrink-0">
+               <img  className="w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[0]}`} alt={place.title} ></img>
+               </div>
             )}
-            
-            </div> //and finally we are displaying the title from the DB!
+            <div className="p-8 grow-0 shrink">
+            <p className='font-bold mb-2'>{place.title}</p>
+            <p className='text-[16px]'>{place.description}</p>
+            </div>
+            </Link> //and finally we are displaying the title from the DB!
           ))}
         </div>
 
