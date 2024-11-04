@@ -20,14 +20,15 @@ export default function PlacesFormPage() {
     const [redirect,setRedirect] = useState(false);
     const[price,setPrice] = useState(500);
     const {id} = useParams();
-    console.log({id})
+    console.log({id});
     useEffect(()=>
     {
         if(!id)
         {
             return;
         }
-    
+        else
+        {
             axios.get('/places/'+id).then( //obtaining the response from the backend and showcasing the data;
                 response => {
                    const {data} = response;
@@ -41,51 +42,55 @@ export default function PlacesFormPage() {
                    setCheckOut(data.checkOut);
                    setMaxGuests(data.maxGuests);
                    setPrice(data.price);
-                
                 }); //this is for the people to edit the existing information 
+
+        }
+    
+           
     },[id]);
 
 
     async function savePlace(ev) {
         ev.preventDefault();
-        if(id) //if existing id:user we are updating the data 
-        {
-            await axios.put('/places', {
-                id,
-                title, 
-                address, 
-                addedPhotos, 
-                description, 
-                perks, 
-                extraInfo, 
-                checkIn, 
-                checkOut, 
-                maxGuests,
-                price,
-            });
-
+        
+        if (redirect) return; // Prevent further actions if already redirecting
+    
+        try {
+            if (id) { // Updating an existing place
+                await axios.put('/places', {
+                    id,
+                    title,
+                    address,
+                    addedPhotos,
+                    description,
+                    perks,
+                    extraInfo,
+                    checkIn,
+                    checkOut,
+                    maxGuests,
+                    price,
+                });
+            } else { // Adding a new place
+                await axios.post('/places', {
+                    title,
+                    address,
+                    addedPhotos,
+                    description,
+                    perks,
+                    extraInfo,
+                    checkIn,
+                    checkOut,
+                    maxGuests,
+                    price,
+                });
+            }
             setRedirect(true);
+        } catch (error) {
+            console.error("Error saving place:", error);
+            // Handle the error (e.g., set an error message in state)
         }
-        else //not a returning user we are adding new data
-        {
-            await axios.post('/places', {
-                title, 
-                address, 
-                addedPhotos, 
-                description, 
-                perks, 
-                extraInfo, 
-                checkIn, 
-                checkOut, 
-                maxGuests,
-                price,
-            });
-
-            setRedirect(true);
-        }
-
-      
     }
+    
     if(redirect)
     {
         return <Navigate to={'/account/places'}></Navigate>

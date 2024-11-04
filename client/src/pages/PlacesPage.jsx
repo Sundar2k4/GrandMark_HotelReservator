@@ -31,7 +31,7 @@ return (
          </div>
          <div className="mt-5">
          {places.length > 0 && places.map(place => (//using the id to find the user and display the data 
-          <Link to={'/account/places/'+place._id} className='bg-gray-100  cursor-pointer px-4 py-8 rounded-xl flex gap-4 text-2xl' key={place.id}>
+          <Link to={'/account/places/'+place._id} className='bg-gray-100 mb-4 hover:scale-105 hover:ease-in duration-300 cursor-pointer px-4 py-8 rounded-xl flex gap-4 text-2xl' key={place.id}>
             {place.photos.length>0&&(
                <div className="w-[12rem] h-[12rem] px-4  mt-7 flex-start grow shrink-0">
                <img  className="w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[0]}`} alt={place.title} ></img>
