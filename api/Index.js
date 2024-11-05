@@ -12,6 +12,7 @@ const multer = require('multer');
 const fs = require('fs')//filesystem
 const path = require('path');
 const Place = require('./models/Place.js');
+const Booking = require('./models/Booking.js');
 
 const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
 const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
@@ -30,6 +31,18 @@ app.use(cors({
 }));
 
 mongoose.connect(process.env.MONGO_URL);
+
+function getUserDataFromReq(req)
+{
+    return new Promise((resolve,reject)=>
+    {
+        jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+        if(err) throw err;
+        resolve(userData)
+    });
+   });
+}
+
 
 app.get('/test', (req, res) => {
     res.json('hello daw');
@@ -225,6 +238,30 @@ app.get('/places', async (req,res)=>{ // this endpoint is for the index page and
 })
 
 
+app.post('/bookings',async (req,res)=>
+{
+    const userData = await getUserDataFromReq(req);
+    const{place,checkIn,checkOut,numberOfGuests,name,mobile,price} = req.body;
+    await Booking.create({
+
+        place,checkIn,checkOut,numberOfGuests,name,mobile,price,
+        user:userData.id,
+    }).then((doc)=>
+    {
+        res.json(doc);
+    }).catch((err)=>{
+        throw err;
+    })
+})
+
+
+
+app.get('/bookings', async (req,res)=>
+{
+ const userData = await getUserDataFromReq(req);
+ res.json( await Booking.find({user:userData.id}).populate('place')); //sends(populates) all the data within the id place
+   
+})
 
 app.listen(4000,()=>
 {
