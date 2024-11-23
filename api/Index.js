@@ -26,12 +26,19 @@ const allowedOrigins = [
     'https://grand-mark-hotel-reservator-client.vercel.app'
 ];
 
-app.use(cors({
-    origin: allowedOrigins,
-    methods:['POST','GET'],
-    credentials: true,
-}));
-
+const corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Required if you are using cookies or `withCredentials: true` in Axios
+  };
+  
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Allow preflight for all routes
 mongoose.connect(process.env.MONGO_URL);
 
 function getUserDataFromReq(req)
