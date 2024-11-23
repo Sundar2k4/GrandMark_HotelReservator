@@ -13,8 +13,13 @@ import PlacesFormPage from './pages/PlacesFormPage.jsx'
 import DetailsPage from './pages/DetailsPage.jsx'
 import BookingsPage from './pages/BookingsPage.jsx'
 import BookingPage from './pages/BookingPage.jsx'
-axios.defaults.baseURL = 'http://localhost:4000';
+if (process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = 'https://grand-mark-hotel-reservator-api.vercel.app'; // Replace with your deployed backend URL
+} else {
+  axios.defaults.baseURL = 'http://localhost:4000'; // Local dev setup
+}
 axios.defaults.withCredentials = true;
+
 function App() {
  return (
     <UserContextProvider>
