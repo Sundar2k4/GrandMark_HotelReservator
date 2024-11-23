@@ -23,14 +23,18 @@ app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'http://grand-mark-hotel-reservator-client.vercel.app'
+    'https://grand-mark-hotel-reservator-client.vercel.app'
 ];
 
 const corsOptions = {
-    origin: 'https://grand-mark-hotel-reservator-client.vercel.app',  // Frontend URL
-    credentials: true, // Allow credentials (cookies or headers)
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Required if you are using cookies or `withCredentials: true` in Axios
   };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight for all routes
