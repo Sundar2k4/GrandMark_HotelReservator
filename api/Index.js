@@ -27,14 +27,10 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true); // Allow the request
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // Required if you are using cookies or `withCredentials: true` in Axios
+    origin: 'https://grand-mark-hotel-reservator-client.vercel.app',  // Frontend URL
+    credentials: true, // Allow credentials (cookies or headers)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight for all routes
