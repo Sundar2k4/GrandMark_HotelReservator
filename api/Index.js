@@ -23,7 +23,7 @@ app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://grand-mark-hotel-reservator-client.vercel.app/'
+    'http://grand-mark-hotel-reservator-client.vercel.app'
 ];
 
 const corsOptions = {
@@ -36,7 +36,6 @@ const corsOptions = {
     },
     credentials: true, // Required if you are using cookies or `withCredentials: true` in Axios
   };
-  
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight for all routes
 mongoose.connect(process.env.MONGO_URL);
