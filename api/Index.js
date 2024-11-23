@@ -15,7 +15,7 @@ const Place = require('./models/Place.js');
 const Booking = require('./models/Booking.js');
 
 const bcryptSalt = bcrypt.genSaltSync(10); // Generates the secret hash key for encrypting password
-const jwtSecret = 'bdewy321823623bshwe81230nqj'; // Updated to 'jwtSecret' for clarity
+const jwtSecret = process.env.JWT_SECRET; // Updated to 'jwtSecret' for clarity
 app.use(express.json()); // Adds JSON parser to avoid internal server error
 app.use(cookieParser()); // Parses cookies to avoid server error when accessing cookie data
 app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole path
