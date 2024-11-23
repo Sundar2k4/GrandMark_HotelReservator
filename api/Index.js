@@ -20,22 +20,16 @@ app.use(express.json()); // Adds JSON parser to avoid internal server error
 app.use(cookieParser()); // Parses cookies to avoid server error when accessing cookie data
 app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole path
 
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'https://grand-mark-hotel-reservator-client.vercel.app'
-];
+
 
 const corsOptions = {
-    origin: function (origin, callback) {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true); // Allow the request
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true, // Required if you are using cookies or `withCredentials: true` in Axios
+    origin: ['https://grand-mark-hotel-reservator-client.vercel.app', 'http://localhost:5173','http://127.0.0.1:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
   };
+  
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight for all routes
 mongoose.connect(process.env.MONGO_URL);
