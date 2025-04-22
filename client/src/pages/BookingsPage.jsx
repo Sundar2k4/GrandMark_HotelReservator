@@ -24,7 +24,7 @@ export default function BookingsPage() {
         {bookings?.length > 0 &&
           bookings.map((booking) => (
             <Link
-              to={`https://grandmark-hotelreservator-api.onrender.com/account/bookings/${booking._id}`}
+              to={`https://grandmark-hotelreservator-client.onrender.com/account/bookings/${booking._id}`}
               className="flex gap-4 mb-6 p-4 bg-primary rounded-xl hover:bg-opacity-90"
               key={booking._id}
             >
