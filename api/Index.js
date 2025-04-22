@@ -23,7 +23,7 @@ app.use('/uploads',express.static(__dirname+'/uploads')) // to specify the whole
 
 
 const corsOptions = {
-    origin: ['https://grand-mark-hotel-reservator-client.vercel.app', 'http://localhost:5173','http://127.0.0.1:5173'],
+    origin: ['https://grand-mark-hotel-reservator-client.vercel.app', 'http://localhost:5173','http://127.0.0.1:5173','https://grandmark-hotelreservator-client.onrender.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
