@@ -143,10 +143,9 @@ app.post('/upload-by-link', async (req, res) => {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Configure multer
 const photosMiddleware = multer({ dest: 'uploads/' });
 
-// Upload endpoint
+
 app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
     const uploadedFiles = [];
 
@@ -159,7 +158,7 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
      uploadedFiles.push(newPath.replace(/uploads[\\/]/, ''));
 
     }
-    res.json(uploadedFiles); // Respond with the array of file URLs
+    res.json(uploadedFiles);
 });
 
 app.post('/places',(req,res)=>
@@ -265,7 +264,5 @@ app.get('/bookings', async (req,res)=>
    
 })
 
-app.listen(4000,()=>
-{
-    console.log('listening on port 4000');
-});
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
