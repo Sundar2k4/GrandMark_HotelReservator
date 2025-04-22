@@ -11,7 +11,7 @@ export default function BookingPage() {
     if (id) {
       axios
         .get(
-          `https://grandmark-hotelreservator-api.onrender.com/bookings/${id}`,
+          `https://grandmark-hotelreservator-api.onrender.com/account/bookings/${id}`,
           {
             withCredentials: true,
           }
