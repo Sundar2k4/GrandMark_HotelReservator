@@ -262,6 +262,13 @@ app.post('/bookings',async (req,res)=>
 })
 
 
+app.get('/bookings', async (req,res)=>
+{
+ const userData = await getUserDataFromReq(req);
+ res.json( await Booking.find({user:userData.id}).populate('place')); //sends(populates) all the data within the id place
+   
+})
+
 app.get('/bookings/:id', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const { id } = req.params;
@@ -275,6 +282,7 @@ app.get('/bookings/:id', async (req, res) => {
     res.json(booking);
   });
   
+
 app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
 app.get('*', (req, res) => {
