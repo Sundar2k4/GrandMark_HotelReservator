@@ -30,12 +30,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
   };
 
-  app.use((req, res, next) => {
-    console.log('Origin:', req.get('Origin'));
-    next();
-  });
-  
-  
+ 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Allow preflight for all routes
 mongoose.connect(process.env.MONGO_URL);
