@@ -269,7 +269,7 @@ app.get('/bookings', async (req,res)=>
    
 })
 
-app.get('/bookings/:id', async (req, res) => {
+app.get('/account/bookings/:id', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const { id } = req.params;
   
