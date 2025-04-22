@@ -10,7 +10,9 @@ export default function BookingPage() {
   useEffect(() => {
     if (id) {
       axios
-        .get("https://grandmark-hotelreservator-api.onrender.com/bookings")
+        .get("https://grandmark-hotelreservator-api.onrender.com/bookings", {
+          withCredentials: true,
+        })
         .then((response) => {
           const foundBooking = response.data.find(({ _id }) => _id === id);
           if (foundBooking) {
