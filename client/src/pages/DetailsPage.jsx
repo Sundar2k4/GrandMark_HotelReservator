@@ -27,7 +27,7 @@ export default function DetailsPage() {
             <div className="grid grid-cols-3 gap-2">
                 {place?.photos?.length>0 && place.photos.map(photo => (
                     <div className="mb-2">
-                        <img  className="h-[32rem] w-[32rem] rounded-xl " src={"http://localhost:4000/uploads/"+photo} alt="" />
+                        <img  className="h-[32rem] w-[32rem] rounded-xl " src={"https://grandmark-hotelreservator-api.onrender.com/uploads/"+photo} alt="" />
                     </div>
                 ))}
                 <button className="bg-primary text-white text-5xl hover:bg-black" onClick={()=>setShowAllPhotos(false)}>Return</button>
@@ -55,22 +55,22 @@ export default function DetailsPage() {
                 {/* Main large image */}
                 <div className="col-span-1 row-span-1">
                     {place.photos?.[0] && (
-                        <img className="rounded-xl w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[0]}`} alt="" />
+                        <img className="rounded-xl w-full h-full object-cover" src={`https://grandmark-hotelreservator-api.onrender.com/uploads/${place.photos[0]}`} alt="" />
                     )}
                 </div>
                 {/* Two small images on the top right */}
                 <div className="grid grid-rows-2 gap-2">
                     {place.photos?.[1] && (
-                        <img className="rounded-xl w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[1]}`} alt="" />
+                        <img className="rounded-xl w-full h-full object-cover" src={`https://grandmark-hotelreservator-api.onrender.com/uploads/${place.photos[1]}`} alt="" />
                     )}
                     {place.photos?.[2] && (
-                        <img className="rounded-xl w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[2]}`} alt="" />
+                        <img className="rounded-xl w-full h-full object-cover" src={`https://grandmark-hotelreservator-api.onrender.com/uploads/${place.photos[2]}`} alt="" />
                     )}
                 </div>
                 {/* Medium image below the small images with button */}
                 {place.photos?.[3] && (
                     <div className="col-span-1 relative">
-                        <img className="rounded-xl w-full h-full object-cover" src={`http://localhost:4000/uploads/${place.photos[3]}`} alt="" />
+                        <img className="rounded-xl w-full h-full object-cover" src={`https://grandmark-hotelreservator-api.onrender.com/uploads/${place.photos[3]}`} alt="" />
                         <button onClick={() => setShowAllPhotos(true)} className="absolute bottom-2 right-2 bg-primary text-white bg-opacity-50 px-3 py-1 rounded-lg shadow-md hover:bg-black">
                             Show more
                         </button>

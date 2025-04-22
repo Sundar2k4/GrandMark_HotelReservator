@@ -14,7 +14,7 @@ import DetailsPage from "./pages/DetailsPage.jsx";
 import BookingsPage from "./pages/BookingsPage.jsx";
 import BookingPage from "./pages/BookingPage.jsx";
 if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = "https://grand-mark-hotel-reservator-api.vercel.app";
+  axios.defaults.baseURL = "https://grandmark-hotelreservator-api.onrender.com";
 } else {
   axios.defaults.baseURL = "http://localhost:4000";
 }
