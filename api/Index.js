@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+app.set('trust proxy', 1); // required for secure cookies to be accepted behind a proxy (like Render)
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -75,7 +76,11 @@ app.post('/login', async (req, res) => {
         if (passOK) {
             jwt.sign({ email: userDoc.email, id: userDoc._id }, jwtSecret, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).json(userDoc);
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,             
+                    sameSite: 'None'          
+                  }).json(userDoc);
             });
         } else {
             res.status(422).json('password incorrect');

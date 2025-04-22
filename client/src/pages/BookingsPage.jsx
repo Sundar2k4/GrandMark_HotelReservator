@@ -8,9 +8,13 @@ export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    axios.get("/bookings").then((response) => {
-      setBookings(response.data);
-    });
+    axios
+      .get("https://grandmark-hotelreservator-api.onrender.com/bookings", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setBookings(response.data);
+      });
   }, []);
 
   return (
