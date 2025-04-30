@@ -136,7 +136,6 @@ Feel free to open a pull request or fork the repo to enhance the app.
 ## 📃 License
 
 This project is licensed under the **MIT License**.  
-Feel free to use, modify, and distribute it as you wish.
 
 ---
 
